@@ -30,7 +30,9 @@ public class UserService {
 	
 	@Transactional
 	public User createUser(User user) {
+		//System.out.println("Antes de cadastrar: " + user.getId());
 		userRepository.save(user);
+		//System.out.println("Depois de cadastrar: " + user.getId());
 		return user;
 		
 	}
