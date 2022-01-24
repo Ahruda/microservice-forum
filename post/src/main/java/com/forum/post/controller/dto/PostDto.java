@@ -3,6 +3,7 @@ package com.forum.post.controller.dto;
 
 
 import java.sql.Date;
+import java.util.List;
 
 import com.forum.post.model.Post;
 
@@ -18,7 +19,8 @@ public class PostDto {
 	
 	private String body;
 	
-
+	private List<CommentDto> comments;
+	
 	public PostDto(Post post, UserDto user) {
 		this.id = post.getId();
 		this.date = post.getDate();
@@ -26,6 +28,17 @@ public class PostDto {
 		this.body = post.getBody();
 		
 		this.user = user;
+	}
+
+
+	public PostDto(Post post, UserDto user,List<CommentDto> comments) {
+		this.id = post.getId();
+		this.date = post.getDate();
+		this.topic = post.getTopic();
+		this.body = post.getBody();
+		
+		this.user = user;
+		this.comments = comments;
 	}
 
 	public Long getId() {
@@ -66,6 +79,14 @@ public class PostDto {
 
 	public void setBody(String body) {
 		this.body = body;
+	}
+
+	public List<CommentDto> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<CommentDto> comments) {
+		this.comments = comments;
 	}
 	
 	

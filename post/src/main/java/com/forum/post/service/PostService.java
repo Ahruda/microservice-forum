@@ -8,11 +8,13 @@ import java.util.function.Consumer;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.forum.post.controller.dto.CommentDto;
 import com.forum.post.controller.dto.PostDto;
 import com.forum.post.controller.dto.UserDto;
 import com.forum.post.model.Post;
@@ -40,25 +42,48 @@ public class PostService {
 		return postDto;
 	}
 	
-	public Post getPostById(Long id) {
-		Optional<Post> post = postRepository.findById(id);
+	public PostDto getPostById(Long id) {
+
+		Optional<Post> postOpt = postRepository.findById(id);
 		
-		return post.get(); 
+		Post post = postOpt.get(); 
+		
+		RestTemplate client = new RestTemplate();
+		
+		ResponseEntity<UserDto> exchangeUser = 
+				client.exchange("http://localhost:8080/user/" + post.getIdUser(), HttpMethod.GET, null, UserDto.class);
+		
+		UserDto user = exchangeUser.getBody();
+		
+		ResponseEntity<List<CommentDto>> exchangeComments = 
+				client.exchange("http://localhost:8082/comment/post/" + post.getId(), HttpMethod.GET, null, new ParameterizedTypeReference<List<CommentDto>>(){});
+
+		List<CommentDto> comments = exchangeComments.getBody();
+
+		PostDto postDto = new PostDto(post, user, comments);
+		
+		return postDto;
 	}
 	
 	public List<PostDto> getAllPosts() {
 		Iterable<Post> posts = postRepository.findAll();
 		List<PostDto> postsDto = new ArrayList<>();
 		
+		RestTemplate client = new RestTemplate();
+
 		Consumer<Post> consumerPost = post -> {
 			
-			RestTemplate client = new RestTemplate();
 			ResponseEntity<UserDto> exchange = 
 					client.exchange("http://localhost:8080/user/" + post.getIdUser(), HttpMethod.GET, null, UserDto.class);
 			
 			UserDto user = exchange.getBody();
 			
-			postsDto.add(new PostDto(post, user));
+			ResponseEntity<List<CommentDto>> exchangeComments = 
+					client.exchange("http://localhost:8082/comment/post/" + post.getId(), HttpMethod.GET, null, new ParameterizedTypeReference<List<CommentDto>>(){});
+
+			List<CommentDto> comments = exchangeComments.getBody();
+			
+			postsDto.add(new PostDto(post, user, comments));
 			
 		};
 		
@@ -69,7 +94,7 @@ public class PostService {
 	
 	@Transactional
 	public Post updatePost(Long id, Post post) {
-		Post postUpdated = getPostById(id);
+		Post postUpdated = postRepository.findById(id).get();
 		postUpdated.setBody(post.getBody());
 		postUpdated.setTopic(post.getTopic()); 		
 		
