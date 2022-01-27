@@ -1,8 +1,6 @@
 package com.forum.post.controller.dto;
 
-
-
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import com.forum.post.model.Post;
@@ -13,7 +11,7 @@ public class PostDto {
 	
 	private UserDto user;
 	
-	private Date date;
+	private LocalDate date;
 	
 	private String topic;
 	
@@ -57,11 +55,11 @@ public class PostDto {
 		this.user = user;
 	}
 
-	public Date getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(LocalDate date) {
 		this.date = date;
 	}
 

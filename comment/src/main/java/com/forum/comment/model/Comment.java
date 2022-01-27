@@ -1,6 +1,7 @@
 package com.forum.comment.model;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,7 +16,7 @@ public class Comment {
 	private Long id;
 	private Long idUser;
 	private Long idPost;
-	private Date date;
+	private LocalDate date;
 	private String body;
 	
 	public Long getId() {
@@ -36,10 +37,10 @@ public class Comment {
 	public void setIdPost(Long idPost) {
 		this.idPost = idPost;
 	}
-	public Date getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
-	public void setDate(Date date) {
+	public void setDate(LocalDate date) {
 		this.date = date;
 	}
 	public String getBody() {

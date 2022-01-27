@@ -1,6 +1,6 @@
 package com.forum.post.model;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,7 +16,7 @@ public class Post {
 	
 	private Long idUser;
 	
-	private Date date;
+	private LocalDate date;
 	
 	private String topic;
 	
@@ -38,11 +38,11 @@ public class Post {
 		this.idUser = idUser;
 	}
 
-	public Date getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(LocalDate date) {
 		this.date = date;
 	}
 

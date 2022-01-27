@@ -1,18 +1,18 @@
 package com.forum.comment.controller.dto;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 
 public class CommentDto {
 
 	private Long id;
-	private Date date;
+	private LocalDate date;
 	private String body;
 	private UserDto user;
 	
 	public CommentDto() {}
 	
-	public CommentDto(Long id, Date date, String body, UserDto user) {
+	public CommentDto(Long id, LocalDate date, String body, UserDto user) {
 		super();
 		this.id = id;
 		this.date = date;
@@ -28,11 +28,11 @@ public class CommentDto {
 		this.id = id;
 	}
 	
-	public Date getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
 	
-	public void setDate(Date date) {
+	public void setDate(LocalDate date) {
 		this.date = date;
 	}
 	
